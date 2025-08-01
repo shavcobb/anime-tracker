@@ -1,20 +1,26 @@
 import { useState } from "react";
-import type { Anime } from "../../types/anime";
+import type {Anime, JikanAnime} from "../../types/anime";
+import {transformJikanToAnime} from "../../utils/dataHelpers.ts";
 
-const SearchBar = () => {
+interface SearchBarProps {
+    onSearch: (query: string, transformedResults: Anime[]) => void;
+}
+
+const SearchBar = (props: SearchBarProps) => {
+    const { onSearch } = props;
+
     const [searchQuery, setSearchQuery] = useState('');
-    const [searchResults, setSearchResults] = useState<Anime[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     const handleSearch = async (query: string) => {
-        if (!query) {
-            setSearchResults([]);
+        // Always update parent with current query state
+        if (!query.trim()) {
+            onSearch("", []);
             return;
         }
 
         setSearchQuery(query);
-        setSearchResults([]);
         setLoading(true);
         setError(null);
 
@@ -26,22 +32,31 @@ const SearchBar = () => {
             }
 
             const data = await response.json();
-            setSearchResults(data.data);
+            const transformedData = data.data.map((jikanAnime: JikanAnime) => transformJikanToAnime(jikanAnime));
+
+            onSearch(query, transformedData);
         } catch (error) {
             setError('Error fetching search results');
+            onSearch(query, []); // Tell parent search failed but query exists
         } finally {
             setLoading(false);
         }
     };
 
-    console.log(searchResults, searchQuery, error);
+    console.log(error);
 
     const searchInput = (
         <input
             type="text"
-            placeholder="Search for animrrre..."
+            placeholder="Search for anime..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {
+                setSearchQuery(e.target.value);
+                // Real-time empty detection
+                if (e.target.value.trim() === '') {
+                    onSearch("", []);
+                }
+            }}
             onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                     handleSearch(searchQuery);
