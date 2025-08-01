@@ -11,7 +11,7 @@ const SearchBar = (props: SearchBarProps) => {
 
     const [searchQuery, setSearchQuery] = useState('');
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const handleSearch = async (query: string) => {
         // Always update parent with current query state
@@ -22,7 +22,7 @@ const SearchBar = (props: SearchBarProps) => {
 
         setSearchQuery(query);
         setLoading(true);
-        setError(null);
+        setErrorMessage(null);
 
         try {
             const response = await fetch(`https://api.jikan.moe/v4/anime?q=${query}`);
@@ -36,14 +36,13 @@ const SearchBar = (props: SearchBarProps) => {
 
             onSearch(query, transformedData);
         } catch (error) {
-            setError('Error fetching search results');
+            setErrorMessage(`Error searching for "${query}": ${error}`);
+            console.error(errorMessage);
             onSearch(query, []); // Tell parent search failed but query exists
         } finally {
             setLoading(false);
         }
     };
-
-    console.log(error);
 
     const searchInput = (
         <input
