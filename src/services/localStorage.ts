@@ -35,6 +35,12 @@ export const saveUserAnimeList = (userAnimeList: UserAnimeEntry[]) => {
     }
 }
 
+export const removeAnimeFromList = (animeId: number) => {
+    const userAnimeList = getUserAnimeList();
+    const updatedList = userAnimeList.filter(entry => entry.animeId !== animeId);
+    saveUserAnimeList(updatedList);
+}
+
 export const addAnimeToList = (anime: Anime, status: WatchStatus) : UserAnimeEntry => {
     const userAnimeList = getUserAnimeList();
     const existingEntry = userAnimeList.find(entry => entry.animeId === anime.id);
@@ -61,6 +67,5 @@ export const addAnimeToList = (anime: Anime, status: WatchStatus) : UserAnimeEnt
     userAnimeList.push(newEntry);
     saveUserAnimeList(userAnimeList);
     return newEntry;
-
 }
 

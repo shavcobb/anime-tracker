@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 import AnimeCard from '../components/anime/AnimeCard';
 import {type Anime, type JikanAnime, WATCH_STATUS} from '../types/anime';
 import SearchBar from "../components/anime/SearchBar.tsx";
-import {transformJikanToAnime} from "../utils/dataHelpers.ts";
-import {addAnimeToList} from "../services/localstorage.ts";
+import {transformJikanToAnime} from "../utils/dataHelpers";
+import {addAnimeToList} from "../services/localStorage";
 
 const Search = () => {
     const [searchResults, setSearchResults] = useState<Anime[]>([]);

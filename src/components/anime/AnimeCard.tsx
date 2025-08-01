@@ -3,13 +3,20 @@ import type { Anime } from '../../types/anime';
 interface AnimeCardProps {
     anime: Anime;
     onAddToList?: (anime: Anime) => void;
+    onRemoveFromList?: (anime: Anime) => void;
     showAddButton?: boolean;
 }
 
-const AnimeCard = ({ anime, onAddToList, showAddButton = true}: AnimeCardProps) => {
+const AnimeCard = ({ anime, onAddToList, onRemoveFromList, showAddButton = true}: AnimeCardProps) => {
     const handleAddClick = () => {
         if (onAddToList) {
             onAddToList(anime);
+        }
+    };
+
+    const handleRemoveClick = () => {
+        if (onRemoveFromList) {
+            onRemoveFromList(anime);
         }
     };
 
@@ -116,13 +123,20 @@ const AnimeCard = ({ anime, onAddToList, showAddButton = true}: AnimeCardProps) 
                 )}
 
                 {/* Add to List Button */}
-                {showAddButton && (
+                {showAddButton ? (
                     <button
                         onClick={handleAddClick}
                         className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded font-medium text-sm transition-colors duration-200 flex items-center justify-center space-x-2"
                     >
                         <span>➕</span>
                         <span>Add to List</span>
+                    </button>
+                ) : (
+                    <button
+                        onClick={handleRemoveClick}
+                        className="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded text-sm font-medium transition-colors duration-200"
+                    >
+                        Remove
                     </button>
                 )}
             </div>
