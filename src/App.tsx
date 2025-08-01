@@ -8,8 +8,6 @@ import MyList from './pages/MyList';
 import AnimeDetail from './pages/AnimeDetail';
 import Stats from './pages/Stats';
 
-import './App.css';
-
 function App() {
     return (
         <Router>
