@@ -31,7 +31,7 @@ const Header = () => {
                         className="flex items-center space-x-2 text-xl font-bold text-purple-400 hover:text-purple-300 transition-colors"
                     >
                         <span className="text-2xl">🎌</span>
-                        <span className="hidden sm:inline">AnimeTracker</span>
+                        <span className="hidden sm:inline">Tsugi - Anime Tracker</span>
                     </Link>
 
                     {/* Page Title - Shows on mobile */}
