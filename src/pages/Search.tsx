@@ -45,7 +45,7 @@ const Search = () => {
     return (
         <div className="space-y-6">
             <div className="text-center">
-                <h1 className="text-3xl font-bold text-purple-400 mb-2">
+                <h1 className="text-3xl font-bold text-red-400 mb-2">
                     Discover Your Next Anime
                 </h1>
                 <p className="text-gray-400">
