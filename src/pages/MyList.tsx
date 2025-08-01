@@ -45,7 +45,7 @@ const MyList = () => {
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <h1 className="text-3xl font-bold text-purple-400">My Anime List</h1>
+                <h1 className="text-3xl font-bold text-red-400">My Anime List</h1>
                 <div className="text-sm text-gray-400">
                     {animeCount} anime tracked
                 </div>

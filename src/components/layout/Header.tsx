@@ -28,10 +28,10 @@ const Header = () => {
                     {/* Logo/Brand */}
                     <Link
                         to="/"
-                        className="flex items-center space-x-2 text-xl font-bold text-purple-400 hover:text-purple-300 transition-colors"
+                        className="flex items-center space-x-2 text-xl font-bold text-red-400 hover:text-red-300 transition-colors"
                     >
                         <span className="text-2xl">🎌</span>
-                        <span className="hidden sm:inline">AnimeTracker</span>
+                        <span className="hidden sm:inline">Tsugi - Anime Tracker</span>
                     </Link>
 
                     {/* Page Title - Shows on mobile */}
@@ -45,7 +45,7 @@ const Header = () => {
                             to="/search"
                             className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                                 location.pathname === '/' || location.pathname === '/search'
-                                    ? 'bg-purple-600 text-white'
+                                    ? 'bg-red-500 text-white'
                                     : 'text-gray-300 hover:text-white hover:bg-gray-700'
                             }`}
                         >
@@ -55,7 +55,7 @@ const Header = () => {
                             to="/my-list"
                             className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                                 location.pathname === '/my-list'
-                                    ? 'bg-purple-600 text-white'
+                                    ? 'bg-red-500 text-white'
                                     : 'text-gray-300 hover:text-white hover:bg-gray-700'
                             }`}
                         >
@@ -65,7 +65,7 @@ const Header = () => {
                             to="/stats"
                             className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                                 location.pathname === '/stats'
-                                    ? 'bg-purple-600 text-white'
+                                    ? 'bg-red-500 text-white'
                                     : 'text-gray-300 hover:text-white hover:bg-gray-700'
                             }`}
                         >

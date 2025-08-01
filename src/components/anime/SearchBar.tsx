@@ -43,7 +43,7 @@ const SearchBar = (props: SearchBarProps) => {
                     handleSearch(searchQuery);
                 }
             }}
-            className="flex-1 bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+            className="flex-1 bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-red-400"
         />
     );
 
@@ -51,7 +51,7 @@ const SearchBar = (props: SearchBarProps) => {
         <button
             onClick={() => handleSearch(searchQuery)}
             disabled={loading}
-            className="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center space-x-2"
+            className="bg-red-500 hover:bg-red-600 disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center space-x-2"
         >
             {loading ? (
                 <>

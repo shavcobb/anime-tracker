@@ -134,7 +134,7 @@ const AnimeCard = ({ anime, onAddToList, onRemoveFromList, showAddButton = true}
                 ) : (
                     <button
                         onClick={handleRemoveClick}
-                        className="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded text-sm font-medium transition-colors duration-200"
+                        className="w-full bg-red-700 hover:bg-red-800 text-white py-2 px-4 rounded text-sm font-medium transition-colors duration-200"
                     >
                         Remove
                     </button>

@@ -43,7 +43,7 @@ const Navigation = () => {
                             to={item.path}
                             className={`flex flex-col items-center justify-center space-y-1 transition-colors ${
                                 active
-                                    ? 'text-purple-400'
+                                    ? 'text-red-400'
                                     : 'text-gray-400 hover:text-gray-200'
                             }`}
                         >
