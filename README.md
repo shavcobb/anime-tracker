@@ -1,4 +1,4 @@
-# 🎌 Anime Tracker
+# 🎌 Tsugi - Anime Tracker
 
 A beautiful, customizable anime tracking application that bridges the gap between complex platforms and overly simple trackers. Built for both anime newcomers and seasoned fans who want a clean, engaging way to manage their watchlists.
 
