@@ -1,9 +1,10 @@
 // pages/Search.tsx
 import { useState, useEffect } from 'react';
 import AnimeCard from '../components/anime/AnimeCard';
-import type {Anime, JikanAnime} from '../types/anime';
+import {type Anime, type JikanAnime, WATCH_STATUS} from '../types/anime';
 import SearchBar from "../components/anime/SearchBar.tsx";
 import {transformJikanToAnime} from "../utils/dataHelpers.ts";
+import {addAnimeToList} from "../services/localstorage.ts";
 
 const Search = () => {
     const [searchResults, setSearchResults] = useState<Anime[]>([]);
@@ -34,14 +35,11 @@ const Search = () => {
     const handleSearchStateChange = (query: string, results: Anime[]) => {
         setSearchQuery(query);
         setSearchResults(results);
-
-        console.log('Search query:', query);
     };
 
     const handleAddToList = (anime: Anime) => {
-        // For now, just log it - we'll implement localStorage later
-        console.log('Adding to list:', anime.title);
-        alert(`Added "${anime.title}" to your list!`);
+        addAnimeToList(anime, WATCH_STATUS.PLAN_TO_WATCH);
+        alert(`Huzzah! "${anime.title}" has been added to your list!`);
     };
 
     return (

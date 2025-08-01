@@ -1,5 +1,3 @@
-// types/anime.ts
-
 // Raw data structure from Jikan API
 export interface JikanAnime {
     mal_id: number;
@@ -77,14 +75,14 @@ export interface UserAnimeEntry {
     anime: Anime; // Include the anime data for easy access
     status: WatchStatus;
     episodesWatched: number;
-    userRating?: number; // 1-10 scale
-    notes?: string;
-    startDate?: string; // ISO date string
-    finishDate?: string; // ISO date string
+    userRating?: number | null; // 1-10 scale
+    notes?: string | null;
+    startDate?: string | null; // ISO date string
+    finishDate?: string | null; // ISO date string
     dateAdded: string; // ISO date string
     lastUpdated: string; // ISO date string
-    isFavorite?: boolean;
-    rewatchCount?: number;
+    isFavorite?: boolean | null;
+    rewatchCount?: number | null;
 }
 
 // Enums for better type safety
@@ -100,6 +98,14 @@ export type WatchStatus =
     | 'plan-to-watch'
     | 'dropped'
     | 'on-hold';
+
+export const WATCH_STATUS = {
+    WATCHING: 'watching' as const,
+    COMPLETED: 'completed' as const,
+    PLAN_TO_WATCH: 'plan-to-watch' as const,
+    DROPPED: 'dropped' as const,
+    ON_HOLD: 'on-hold' as const,
+} as const;
 
 // For the status filter component
 export interface StatusOption {
