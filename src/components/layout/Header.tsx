@@ -17,7 +17,7 @@ const Header = () => {
                 if (location.pathname.startsWith('/anime/')) {
                     return 'Anime Details';
                 }
-                return 'Anime Tracker';
+                return 'Tsugi';
         }
     };
 
