@@ -3,7 +3,6 @@ import { Link, useLocation } from ‘react-router-dom’;
 const Header = () => {
 const location = useLocation();
 
-```
 // Get page title based on current route
 const getPageTitle = () => {
     switch (location.pathname) {
@@ -82,7 +81,6 @@ return (
         </div>
     </header>
 );
-```
 
 };
 
