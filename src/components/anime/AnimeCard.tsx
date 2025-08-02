@@ -64,7 +64,7 @@ const AnimeCard = ({ anime, onAddToList, onRemoveFromList, showAddButton = true}
                 )}
 
                 {/* Type badge */}
-                <div className="absolute top-2 left-2 bg-purple-600 text-white px-2 py-1 rounded text-xs font-medium uppercase">
+                <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-xs font-medium uppercase">
                     {anime.type}
                 </div>
             </div>
@@ -126,7 +126,7 @@ const AnimeCard = ({ anime, onAddToList, onRemoveFromList, showAddButton = true}
                 {showAddButton ? (
                     <button
                         onClick={handleAddClick}
-                        className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded font-medium text-sm transition-colors duration-200 flex items-center justify-center space-x-2"
+                        className="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded font-medium text-sm transition-colors duration-200 flex items-center justify-center space-x-2"
                     >
                         <span>➕</span>
                         <span>Add to List</span>
@@ -134,7 +134,7 @@ const AnimeCard = ({ anime, onAddToList, onRemoveFromList, showAddButton = true}
                 ) : (
                     <button
                         onClick={handleRemoveClick}
-                        className="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded text-sm font-medium transition-colors duration-200"
+                        className="w-full bg-red-700 hover:bg-red-800 text-white py-2 px-4 rounded text-sm font-medium transition-colors duration-200"
                     >
                         Remove
                     </button>
