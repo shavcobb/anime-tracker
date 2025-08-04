@@ -69,3 +69,9 @@ export const addAnimeToList = (anime: Anime, status: WatchStatus) : UserAnimeEnt
     return newEntry;
 }
 
+export const updateAnimeEntry =  (animeId: number, updates: Partial<UserAnimeEntry>) => {
+    const userAnimeList = getUserAnimeList();
+    const updatedList = userAnimeList.map(entry => entry.animeId === animeId ? {...entry, ...updates} : entry);
+    saveUserAnimeList(updatedList);
+}
+

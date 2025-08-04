@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { getUserAnimeList, removeAnimeFromList } from '../services/localStorage';
-import AnimeCard from '../components/anime/AnimeCard';
-import type {Anime, UserAnimeEntry} from '../types/anime';
+import {getUserAnimeList, removeAnimeFromList, updateAnimeEntry} from '../services/localStorage';
+import type {Anime, UserAnimeEntry, WatchStatus} from '../types/anime';
+import MyListAnimeCard from "../components/anime/MyListAnimeCard.tsx";
 
 const MyList = () => {
     const [userAnimeList, setUserAnimeList] = useState<UserAnimeEntry[]>([]);
@@ -20,6 +20,11 @@ const MyList = () => {
         alert(`Removed "${anime.title}" from your list!`);
     };
 
+    const updateWatchStatus = (animeId: number, newStatus: WatchStatus) => {
+        updateAnimeEntry(animeId, { status: newStatus });
+        setUserAnimeList(getUserAnimeList());
+    };
+
     const emptyList = (
         <div className="bg-gray-800 rounded-lg p-8 text-center">
             <p className="text-gray-400 mb-4">Your anime list is empty!</p>
@@ -30,14 +35,24 @@ const MyList = () => {
     );
 
     const renderList = (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {userAnimeList.map((animeListItem) => (
-                <AnimeCard
-                    key={animeListItem.animeId}
-                    anime={animeListItem.anime}
-                    showAddButton={false}
-                    onRemoveFromList={handleRemoveFromList}
-                />
+                <div key={animeListItem.anime.id} className="relative">
+                    {/* Trash can - positioned over THIS specific card */}
+                    <div
+                        onClick={() => handleRemoveFromList(animeListItem.anime)}
+                        className="absolute top-2 right-2 z-10 text-white p-1 rounded cursor-pointer transition-colors"
+                    >
+                        🗑️
+                    </div>
+
+                    <MyListAnimeCard
+                        key={animeListItem.anime.id}
+                        anime={animeListItem.anime}
+                        userEntry={animeListItem}
+                        onStatusChange={updateWatchStatus}
+                    />
+                </div>
             ))}
         </div>
     );

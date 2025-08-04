@@ -1,20 +1,23 @@
 // pages/Search.tsx
 import { useState, useEffect } from 'react';
 import AnimeCard from '../components/anime/AnimeCard';
-import {type Anime, type JikanAnime, WATCH_STATUS} from '../types/anime';
+import {type Anime, type JikanAnime, type UserAnimeEntry, WATCH_STATUS} from '../types/anime';
 import SearchBar from "../components/anime/SearchBar.tsx";
 import {transformJikanToAnime} from "../utils/dataHelpers";
-import {addAnimeToList} from "../services/localStorage";
+import {addAnimeToList, getUserAnimeList} from "../services/localStorage";
 
 const Search = () => {
     const [searchResults, setSearchResults] = useState<Anime[]>([]);
     const [popularResults, setPopularResults] = useState<Anime[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [userAnimeList, setUserAnimeList] = useState<UserAnimeEntry[]>([]);
 
     const hasSearched = searchQuery.length > 0;
     const hasResults = searchResults.length > 0;
     const showNoResults = hasSearched && !hasResults;
     const currentResultsShown = hasResults ? searchResults : popularResults;
+    const isAlreadyInList = (anime: Anime) => userAnimeList.some((entry) => entry.anime.id === anime.id);
+
 
     useEffect(() => {
         const fetchPopularAnime = async () => {
@@ -30,6 +33,11 @@ const Search = () => {
         };
 
         fetchPopularAnime();
+    }, []);
+
+    useEffect(() => {
+        const storedAnimeList = getUserAnimeList();
+        setUserAnimeList(storedAnimeList);
     }, []);
 
     const handleSearchStateChange = (query: string, results: Anime[]) => {
@@ -90,7 +98,7 @@ const Search = () => {
                                 key={anime.id}
                                 anime={anime}
                                 onAddToList={handleAddToList}
-                                showAddButton={true}
+                                isAlreadyInList={isAlreadyInList(anime)}
                             />
                         ))}
                     </div>
