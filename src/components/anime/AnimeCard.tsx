@@ -3,20 +3,13 @@ import type { Anime } from '../../types/anime';
 interface AnimeCardProps {
     anime: Anime;
     onAddToList?: (anime: Anime) => void;
-    onRemoveFromList?: (anime: Anime) => void;
-    showAddButton?: boolean;
+    isAlreadyInList?: boolean;
 }
 
-const AnimeCard = ({ anime, onAddToList, onRemoveFromList, showAddButton = true}: AnimeCardProps) => {
+const AnimeCard = ({ anime, onAddToList, isAlreadyInList = false }: AnimeCardProps) => {
     const handleAddClick = () => {
         if (onAddToList) {
             onAddToList(anime);
-        }
-    };
-
-    const handleRemoveClick = () => {
-        if (onRemoveFromList) {
-            onRemoveFromList(anime);
         }
     };
 
@@ -111,19 +104,19 @@ const AnimeCard = ({ anime, onAddToList, onRemoveFromList, showAddButton = true}
                                 key={index}
                                 className="bg-gray-700 text-gray-300 px-2 py-1 rounded text-xs"
                             >
-                {genre}
-              </span>
+                                {genre}
+                            </span>
                         ))}
                         {anime.genres.length > 3 && (
                             <span className="text-gray-400 text-xs py-1">
-                +{anime.genres.length - 3} more
-              </span>
+                                +{anime.genres.length - 3} more
+                            </span>
                         )}
                     </div>
                 )}
 
                 {/* Add to List Button */}
-                {showAddButton ? (
+                {!isAlreadyInList && (
                     <button
                         onClick={handleAddClick}
                         className="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded font-medium text-sm transition-colors duration-200 flex items-center justify-center space-x-2"
@@ -131,17 +124,10 @@ const AnimeCard = ({ anime, onAddToList, onRemoveFromList, showAddButton = true}
                         <span>➕</span>
                         <span>Add to List</span>
                     </button>
-                ) : (
-                    <button
-                        onClick={handleRemoveClick}
-                        className="w-full bg-red-700 hover:bg-red-800 text-white py-2 px-4 rounded text-sm font-medium transition-colors duration-200"
-                    >
-                        Remove
-                    </button>
                 )}
             </div>
         </div>
-    )
+    );
 };
 
 export default AnimeCard;

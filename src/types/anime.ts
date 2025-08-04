@@ -107,6 +107,14 @@ export const WATCH_STATUS = {
     ON_HOLD: 'on-hold' as const,
 } as const;
 
+export const statusOptions = [
+    { value: WATCH_STATUS.PLAN_TO_WATCH, label: 'Plan to Watch', color: 'bg-gray-600' },
+    { value: WATCH_STATUS.WATCHING, label: 'Watching', color: 'bg-blue-600' },
+    { value: WATCH_STATUS.COMPLETED, label: 'Completed', color: 'bg-green-600' },
+    { value: WATCH_STATUS.ON_HOLD, label: 'On Hold', color: 'bg-yellow-600' },
+    { value: WATCH_STATUS.DROPPED, label: 'Dropped', color: 'bg-red-600' }
+];
+
 // For the status filter component
 export interface StatusOption {
     value: WatchStatus;
