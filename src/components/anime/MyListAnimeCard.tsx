@@ -1,5 +1,6 @@
 import { type Anime, statusOptions, type UserAnimeEntry, type WatchStatus } from '../../types/anime';
 import {useEffect, useRef, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 interface MyListAnimeCardProps {
     anime: Anime;
@@ -11,6 +12,7 @@ interface MyListAnimeCardProps {
 const MyListAnimeCard = ({ anime, userEntry, onStatusChange, showProgressTracker }: MyListAnimeCardProps) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+    const navigate = useNavigate();
     const dropdownRef = useRef<HTMLDivElement>(null);
     const totalEpisodes = userEntry.anime.totalEpisodes ?? 0;
     const watchedEpisodes = userEntry.episodesWatched || 0;
@@ -33,6 +35,10 @@ const MyListAnimeCard = ({ anime, userEntry, onStatusChange, showProgressTracker
         };
     }, [isDropdownOpen]);
 
+    const handleCardClick = () => {
+        navigate(`/anime/${anime.id}`);
+    };
+
     const getWatchStatusColor = (status: string) => {
         const statusOption = statusOptions.find(option => option.value === status);
         return statusOption?.color ?? 'bg-gray-600';
@@ -44,7 +50,8 @@ const MyListAnimeCard = ({ anime, userEntry, onStatusChange, showProgressTracker
     };
 
     return (
-        <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 group min-h-[350px] flex flex-col">
+        <div onClick={handleCardClick}
+            className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 group min-h-[350px] flex flex-col">
             {/* Cover Image */}
             <div className="relative aspect-[3/4] overflow-hidden">
                 <img

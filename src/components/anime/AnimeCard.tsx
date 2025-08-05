@@ -1,4 +1,5 @@
 import type { Anime } from '../../types/anime';
+import {useNavigate} from "react-router-dom";
 
 interface AnimeCardProps {
     anime: Anime;
@@ -7,10 +8,16 @@ interface AnimeCardProps {
 }
 
 const AnimeCard = ({ anime, onAddToList, isAlreadyInList = false }: AnimeCardProps) => {
+    const navigate = useNavigate();
+
     const handleAddClick = () => {
         if (onAddToList) {
             onAddToList(anime);
         }
+    };
+
+    const handleCardClick = () => {
+        navigate(`/anime/${anime.id}`);
     };
 
     // Helper function to format episode count
@@ -34,7 +41,8 @@ const AnimeCard = ({ anime, onAddToList, isAlreadyInList = false }: AnimeCardPro
     };
 
     return (
-        <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 group">
+        <div onClick={handleCardClick}
+            className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 group">
             {/* Cover Image */}
             <div className="relative aspect-[3/4] overflow-hidden">
                 <img
