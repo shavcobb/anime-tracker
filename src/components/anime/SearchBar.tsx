@@ -4,10 +4,11 @@ import {searchAnime} from "../../services/jikanApi.ts";
 
 interface SearchBarProps {
     onSearch: (query: string, transformedResults: Anime[]) => void;
+    onLoadingChange: (isLoading: boolean) => void;
 }
 
 const SearchBar = (props: SearchBarProps) => {
-    const { onSearch } = props;
+    const { onSearch, onLoadingChange } = props;
 
     const [searchQuery, setSearchQuery] = useState('');
     const [loading, setLoading] = useState(false);
@@ -20,10 +21,12 @@ const SearchBar = (props: SearchBarProps) => {
 
         setSearchQuery(query);
         setLoading(true);
+        onLoadingChange(true);
 
         const results = await searchAnime(query);
          onSearch(query, results);
          setLoading(false);
+         onLoadingChange(false);
     };
 
     const searchInput = (

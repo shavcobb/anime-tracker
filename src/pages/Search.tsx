@@ -11,6 +11,7 @@ const Search = () => {
     const [popularResults, setPopularResults] = useState<Anime[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [userAnimeList, setUserAnimeList] = useState<UserAnimeEntry[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const hasSearched = searchQuery.length > 0;
     const hasResults = searchResults.length > 0;
@@ -47,8 +48,38 @@ const Search = () => {
 
     const handleAddToList = (anime: Anime) => {
         addAnimeToList(anime, WATCH_STATUS.PLAN_TO_WATCH);
-        alert(`Huzzah! "${anime.title}" has been added to your list!`);
     };
+
+    const SkeletonCard = () => (
+        <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg animate-pulse">
+            {/* Cover Image Skeleton */}
+            <div className="aspect-[3/4] bg-gray-700"></div>
+
+            {/* Content Skeleton */}
+            <div className="p-4 space-y-3">
+                {/* Title */}
+                <div className="space-y-2">
+                    <div className="h-4 bg-gray-700 rounded w-4/5"></div>
+                    <div className="h-3 bg-gray-700 rounded w-3/5"></div>
+                </div>
+
+                {/* Info rows */}
+                <div className="space-y-2">
+                    <div className="flex justify-between">
+                        <div className="h-3 bg-gray-700 rounded w-16"></div>
+                        <div className="h-3 bg-gray-700 rounded w-20"></div>
+                    </div>
+                    <div className="flex justify-between">
+                        <div className="h-3 bg-gray-700 rounded w-12"></div>
+                        <div className="h-3 bg-gray-700 rounded w-24"></div>
+                    </div>
+                </div>
+
+                {/* Button skeleton */}
+                <div className="h-10 bg-gray-700 rounded"></div>
+            </div>
+        </div>
+    );
 
     return (
         <div className="space-y-6">
@@ -61,9 +92,9 @@ const Search = () => {
                 </p>
             </div>
 
-            {/* Search Bar - Placeholder for now */}
+            {/* Search Bar */}
             <div className="max-w-2xl mx-auto">
-                <SearchBar onSearch={handleSearchStateChange} />
+                <SearchBar onSearch={handleSearchStateChange} onLoadingChange={setIsLoading}/>
             </div>
 
             {/* Results */}
@@ -93,14 +124,22 @@ const Search = () => {
                     </div>
                 ) : (
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                        {currentResultsShown.map((anime) => (
-                            <AnimeCard
-                                key={anime.id}
-                                anime={anime}
-                                onAddToList={handleAddToList}
-                                isAlreadyInList={isAlreadyInList(anime)}
-                            />
-                        ))}
+                        {isLoading ? (
+                            // Show skeleton cards while searching
+                            Array.from({ length: 12 }, (_, index) => (
+                                <SkeletonCard key={`skeleton-${index}`} />
+                            ))
+                        ) : (
+                            // Show actual results
+                            currentResultsShown.map((anime) => (
+                                <AnimeCard
+                                    key={anime.id}
+                                    anime={anime}
+                                    onAddToList={handleAddToList}
+                                    isAlreadyInList={isAlreadyInList(anime)}
+                                />
+                            ))
+                        )}
                     </div>
                 )}
             </div>

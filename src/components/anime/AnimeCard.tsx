@@ -116,7 +116,12 @@ const AnimeCard = ({ anime, onAddToList, isAlreadyInList = false }: AnimeCardPro
                 )}
 
                 {/* Add to List Button */}
-                {!isAlreadyInList && (
+                {isAlreadyInList ? (
+                    <div className="w-full bg-gray-600 text-gray-300 py-2 px-4 rounded font-medium text-sm flex items-center justify-center space-x-2 cursor-not-allowed">
+                        <span>✓</span>
+                        <span>Already Added</span>
+                    </div>
+                ) : (
                     <button
                         onClick={handleAddClick}
                         className="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded font-medium text-sm transition-colors duration-200 flex items-center justify-center space-x-2"

@@ -1,16 +1,20 @@
-import { type Anime, statusOptions, type UserAnimeEntry, WATCH_STATUS, type WatchStatus } from '../../types/anime';
+import { type Anime, statusOptions, type UserAnimeEntry, type WatchStatus } from '../../types/anime';
 import {useEffect, useRef, useState} from "react";
 
 interface MyListAnimeCardProps {
     anime: Anime;
     userEntry: UserAnimeEntry;
     onStatusChange?: (animeId: number, status: WatchStatus) => void;
+    showProgressTracker: boolean;
 }
 
-const MyListAnimeCard = ({ anime, userEntry, onStatusChange }: MyListAnimeCardProps) => {
+const MyListAnimeCard = ({ anime, userEntry, onStatusChange, showProgressTracker }: MyListAnimeCardProps) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const totalEpisodes = userEntry.anime.totalEpisodes ?? 0;
+    const watchedEpisodes = userEntry.episodesWatched || 0;
+    const progressPercentage = watchedEpisodes / totalEpisodes * 100;
 
     // Close dropdown when clicking outside
     useEffect(() => {
@@ -98,10 +102,17 @@ const MyListAnimeCard = ({ anime, userEntry, onStatusChange }: MyListAnimeCardPr
 
                 {/* Minimal Info */}
                 <div className="space-y-1 text-xs">
-                    {userEntry?.status === WATCH_STATUS.WATCHING && (
-                        <div className="flex items-center justify-between">
-                            <span className="text-gray-400">Episodes watched:</span>
-                            <span className="text-gray-300">{userEntry.episodesWatched}</span>
+                    {showProgressTracker && (
+                        <div>
+                            <div className="w-full bg-gray-700 rounded-lg h-5 relative flex items-center justify-center">
+                                <div
+                                    className="absolute left-0 top-0 bg-red-500 h-full rounded-lg transition-all"
+                                    style={{ width: `${progressPercentage}%` }}
+                                />
+                                <span className="relative z-10 text-sm font-medium text-white">
+                                    {watchedEpisodes}/{totalEpisodes} episodes
+                                </span>
+                            </div>
                         </div>
                     )}
                 </div>
