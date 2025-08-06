@@ -1,26 +1,43 @@
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { getUserAnimeList, updateAnimeEntry } from '../services/localStorage';
-import {statusOptions, WATCH_STATUS} from '../types/anime';
-import type { UserAnimeEntry, WatchStatus } from '../types/anime';
+import React, { useState, useEffect, useRef } from 'react';
+import { ChevronDownIcon } from 'lucide-react';
+import { EpisodeCounter } from './EpisodeCounter';
+import {statusOptions, type UserAnimeEntry, WATCH_STATUS, type WatchStatus} from "../../types/anime.ts";
+import {getUserAnimeList, updateAnimeEntry} from "../../services/localStorage.ts";
 
-const AnimeDetail = () => {
-    const { id } = useParams<{ id: string }>();
-    const navigate = useNavigate();
+interface AnimeDetailModalProps {
+    animeId: number;
+}
 
+export const AnimeDetailModal: React.FC<AnimeDetailModalProps> = ({ animeId }) => {
     const [userEntry, setUserEntry] = useState<UserAnimeEntry | null>(null);
     const [loading, setLoading] = useState(true);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (!id) return;
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsDropdownOpen(false);
+            }
+        };
 
+        if (isDropdownOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isDropdownOpen]);
+
+    useEffect(() => {
         // Find the anime in user's list
         const userAnimeList = getUserAnimeList();
-        const foundEntry = userAnimeList.find(entry => entry.anime.id === parseInt(id));
+        const foundEntry = userAnimeList.find(entry => entry.anime.id === animeId);
 
         setUserEntry(foundEntry || null);
         setLoading(false);
-    }, [id]);
+    }, [animeId]);
 
     const handleStatusChange = (newStatus: WatchStatus) => {
         if (!userEntry) return;
@@ -53,13 +70,7 @@ const AnimeDetail = () => {
         return (
             <div className="text-center py-12">
                 <h2 className="text-xl text-gray-400 mb-4">Anime not found</h2>
-                <p className="text-gray-500 mb-6">This anime is not in your list.</p>
-                <button
-                    onClick={() => navigate(-1)}
-                    className="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg"
-                >
-                    Go Back
-                </button>
+                <p className="text-gray-500">This anime is not in your list.</p>
             </div>
         );
     }
@@ -68,25 +79,6 @@ const AnimeDetail = () => {
 
     return (
         <div className="space-y-6">
-            {/* Back button */}
-            <button
-                onClick={() => navigate(-1)}
-                className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors"
-            >
-                <span>←</span>
-                <span>Back</span>
-            </button>
-
-            {/* Anime title */}
-            <div>
-                <h1 className="text-3xl font-bold text-white mb-2">
-                    {anime.englishTitle ?? anime.title}
-                </h1>
-                {anime.englishTitle && anime.title !== anime.englishTitle && (
-                    <p className="text-xl text-gray-400">{anime.title}</p>
-                )}
-            </div>
-
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Left Column - Cover Art */}
                 <div className="lg:col-span-1">
@@ -113,20 +105,42 @@ const AnimeDetail = () => {
                             {/* Status */}
                             <div className="flex items-center justify-between">
                                 <span className="text-gray-400">Status:</span>
-                                <div className="flex items-center space-x-2">
-                                    {statusOptions.map((option) => (
-                                        <button
-                                            key={option.value}
-                                            onClick={() => handleStatusChange(option.value)}
-                                            className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
-                                                userEntry.status === option.value
-                                                    ? `${option.color} text-white`
-                                                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                                            }`}
-                                        >
-                                            {option.label}
-                                        </button>
-                                    ))}
+                                <div className="relative inline-block">
+                                    <button
+                                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                        className={`min-w-36 flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                            statusOptions.find(opt => opt.value === userEntry.status)?.color || 'bg-gray-700'
+                                        } text-white`}
+                                    >
+                                        <span>{statusOptions.find(opt => opt.value === userEntry.status)?.label || 'Select Status'}</span>
+                                        <ChevronDownIcon
+                                            className={`w-4 h-4 ml-2 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`}
+                                        />
+                                    </button>
+
+                                    {isDropdownOpen && (
+                                        <div className="absolute top-full right-0 mt-2 min-w-36 bg-gray-800 border border-gray-700 rounded-lg shadow-xl z-50 overflow-hidden">
+                                            <div className="py-1">
+                                                {statusOptions.map((option) => (
+                                                    <button
+                                                        key={option.value}
+                                                        onClick={() => {
+                                                            handleStatusChange(option.value);
+                                                            setIsDropdownOpen(false);
+                                                        }}
+                                                        className={`w-full px-4 py-2 text-left hover:bg-gray-700 transition-colors text-sm ${
+                                                            userEntry.status === option.value
+                                                                ? `${option.color}/20 text-white border-l-4`
+                                                                : 'text-gray-300'
+                                                        }`}
+                                                        style={userEntry.status === option.value ? { borderLeftColor: option.color.replace('bg-', '').replace('-500', '') } : {}}
+                                                    >
+                                                        {option.label}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
@@ -135,25 +149,18 @@ const AnimeDetail = () => {
                                 <div className="space-y-2">
                                     <div className="flex items-center justify-between">
                                         <span className="text-gray-400">Episodes:</span>
-                                        <div className="flex items-center space-x-3">
-                                            <button
-                                                onClick={() => handleEpisodeChange(-1)}
-                                                disabled={userEntry.episodesWatched <= 0}
-                                                className="bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 disabled:text-gray-500 text-white w-8 h-8 rounded flex items-center justify-center"
-                                            >
-                                                -
-                                            </button>
-                                            <span className="text-white font-medium min-w-[80px] text-center">
-                                    {userEntry.episodesWatched} / {anime.totalEpisodes}
-                                </span>
-                                            <button
-                                                onClick={() => handleEpisodeChange(1)}
-                                                disabled={userEntry.episodesWatched >= anime.totalEpisodes}
-                                                className="bg-red-500 hover:bg-red-600 disabled:bg-gray-800 disabled:text-gray-500 text-white w-8 h-8 rounded flex items-center justify-center"
-                                            >
-                                                +
-                                            </button>
-                                        </div>
+                                        <EpisodeCounter
+                                            currentEpisode={userEntry.episodesWatched}
+                                            totalEpisodes={anime.totalEpisodes}
+                                            onEpisodeChange={(newEpisode) => {
+                                                updateAnimeEntry(userEntry.anime.id, { episodesWatched: newEpisode });
+                                                setUserEntry({ ...userEntry, episodesWatched: newEpisode });
+                                            }}
+                                            onDecrement={() => handleEpisodeChange(-1)}
+                                            onIncrement={() => handleEpisodeChange(1)}
+                                            canDecrement={userEntry.episodesWatched > 0}
+                                            canIncrement={userEntry.episodesWatched < anime.totalEpisodes}
+                                        />
                                     </div>
 
                                     {/* Progress Bar */}
@@ -217,7 +224,9 @@ const AnimeDetail = () => {
                     {anime.synopsis && (
                         <div className="bg-gray-800 rounded-lg p-6">
                             <h3 className="text-lg font-semibold text-white mb-4">Synopsis</h3>
-                            <p className="text-gray-300 leading-relaxed">{anime.synopsis}</p>
+                            <p className="text-gray-300 leading-relaxed max-h-32 overflow-y-auto pr-2 custom-scrollbar">
+                                {anime.synopsis}
+                            </p>
                         </div>
                     )}
 
@@ -231,8 +240,8 @@ const AnimeDetail = () => {
                                         key={index}
                                         className="bg-red-500 text-white px-3 py-1 rounded-full text-sm"
                                     >
-                            {genre}
-                        </span>
+                    {genre}
+                  </span>
                                 ))}
                             </div>
                         </div>
@@ -242,5 +251,3 @@ const AnimeDetail = () => {
         </div>
     );
 };
-
-export default AnimeDetail;

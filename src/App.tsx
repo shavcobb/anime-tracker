@@ -5,8 +5,8 @@ import Layout from './components/layout/Layout';
 // Page components (we'll create these next)
 import Search from './pages/Search';
 import MyList from './pages/MyList';
-import AnimeDetail from './pages/AnimeDetail';
 import Stats from './pages/Stats';
+import AnimeDetailWrapper from "./pages/AnimeDetailWrapper.tsx";
 
 function App() {
     return (
@@ -22,7 +22,7 @@ function App() {
                     <Route path="stats" element={<Stats />} />
 
                     {/* Dynamic route for individual anime */}
-                    <Route path="anime/:id" element={<AnimeDetail />} />
+                    <Route path="/anime/:id" element={<AnimeDetailWrapper />} />
 
                     {/* Catch all - redirect to search */}
                     <Route path="*" element={<Navigate to="/search" replace />} />

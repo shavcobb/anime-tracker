@@ -1,10 +1,10 @@
 // pages/Search.tsx
 import { useState, useEffect } from 'react';
 import AnimeCard from '../components/anime/AnimeCard';
-import {type Anime, type JikanAnime, type UserAnimeEntry, WATCH_STATUS} from '../types/anime';
+import {type Anime, type UserAnimeEntry, WATCH_STATUS} from '../types/anime';
 import SearchBar from "../components/anime/SearchBar.tsx";
-import {transformJikanToAnime} from "../utils/dataHelpers";
 import {addAnimeToList, getUserAnimeList} from "../services/localStorage";
+import {getPopularAnime} from "../services/jikanApi.ts";
 
 const Search = () => {
     const [searchResults, setSearchResults] = useState<Anime[]>([]);
@@ -12,6 +12,7 @@ const Search = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [userAnimeList, setUserAnimeList] = useState<UserAnimeEntry[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingPopular, setIsLoadingPopular] = useState(false);
 
     const hasSearched = searchQuery.length > 0;
     const hasResults = searchResults.length > 0;
@@ -22,14 +23,15 @@ const Search = () => {
 
     useEffect(() => {
         const fetchPopularAnime = async () => {
-            try {
-                const response = await fetch('https://api.jikan.moe/v4/top/anime?limit=12&type=tv&filter=bypopularity');
-                const data = await response.json();
-                const transformedData = data.data.map((jikanAnime: JikanAnime) => transformJikanToAnime(jikanAnime));
+            setIsLoadingPopular(true);
 
+            try {
+                const transformedData = await getPopularAnime();
                 setPopularResults(transformedData);
             } catch (error) {
                 console.error('Error fetching popular results:', error);
+            } finally {
+                setIsLoadingPopular(false);
             }
         };
 
@@ -124,8 +126,8 @@ const Search = () => {
                     </div>
                 ) : (
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                        {isLoading ? (
-                            // Show skeleton cards while searching
+                        {(isLoading || (!hasSearched && isLoadingPopular)) ? (
+                            // Show skeleton cards while searching OR while loading popular anime
                             Array.from({ length: 12 }, (_, index) => (
                                 <SkeletonCard key={`skeleton-${index}`} />
                             ))

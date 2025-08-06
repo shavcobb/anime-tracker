@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import {getUserAnimeList, removeAnimeFromList, updateAnimeEntry} from '../services/localStorage';
 import {type Anime, statusOptions, type UserAnimeEntry, WATCH_STATUS, type WatchStatus} from '../types/anime';
 import MyListAnimeCard from "../components/anime/MyListAnimeCard.tsx";
+import {StatusFilterDropdown} from "../components/ui/StatusFilterDropdown.tsx";
 
 const MyList = () => {
     const [userAnimeList, setUserAnimeList] = useState<UserAnimeEntry[]>([]);
@@ -104,37 +105,14 @@ const MyList = () => {
             {/* Filter Buttons - Only show if list is not empty */}
             {!isListEmpty && (
                 <div className="space-y-4">
-                    <div className="flex flex-wrap gap-2">
-                        {/* All button */}
-                        <button
-                            onClick={() => setActiveFilter('all')}
-                            className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors duration-200 ${
-                                activeFilter === 'all'
-                                    ? 'bg-red-500 text-white'
-                                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                            }`}
-                        >
-                            All ({animeCount})
-                        </button>
-
-                        {/* Status filter buttons */}
-                        {statusOptions.map((option) => {
-                            const count = getStatusCount(option.value);
-                            return (
-                                <button
-                                    key={option.value}
-                                    onClick={() => setActiveFilter(option.value)}
-                                    className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors duration-200 ${
-                                        activeFilter === option.value
-                                            ? `${option.color} text-white`
-                                            : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                                    }`}
-                                >
-                                    {option.label} ({count})
-                                </button>
-                            );
-                        })}
-                    </div>
+                    {/* Mobile-friendly dropdown instead of buttons */}
+                    <StatusFilterDropdown
+                        selectedStatus={activeFilter}
+                        onStatusChange={setActiveFilter}
+                        statusOptions={statusOptions}
+                        getStatusCount={getStatusCount}
+                        animeCount={animeCount}
+                    />
 
                     {/* Results info */}
                     <div className="text-sm text-gray-400">
