@@ -19,7 +19,6 @@ const MyListAnimeCard = ({ anime, userEntry, onStatusChange, showProgressTracker
     const watchedEpisodes = userEntry.episodesWatched || 0;
     const progressPercentage = watchedEpisodes / totalEpisodes * 100;
 
-    // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {

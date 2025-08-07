@@ -11,7 +11,6 @@ interface ModalProps {
 export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
     const modalRef = useRef<HTMLDivElement>(null);
 
-    // Close on Escape key
     useEffect(() => {
         const handleEscape = (e: KeyboardEvent) => {
             if (e.key === 'Escape') {
@@ -31,7 +30,6 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }
         };
     }, [isOpen, onClose]);
 
-    // Close when clicking backdrop
     const handleBackdropClick = (e: React.MouseEvent) => {
         if (e.target === modalRef.current) {
             onClose();

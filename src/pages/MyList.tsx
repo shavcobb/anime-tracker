@@ -55,13 +55,13 @@ const MyList = () => {
     );
 
     const renderList = (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
             {filteredAnimeList.map((animeListItem) => (
                 <div key={animeListItem.anime.id} className="relative">
-                    {/* Trash can - positioned over THIS specific card */}
+                    {/* Trash can - positioned over card */}
                     <button
                         onClick={() => handleRemoveFromList(animeListItem.anime)}
-                        className="absolute top-2 right-2 z-10 text-white p-1 rounded cursor-pointer transition-colors"
+                        className="absolute top-2 right-2 z-10 bg-red-500 text-white p-1 rounded cursor-pointer transition-colors"
                     >
                         🗑️
                     </button>
@@ -110,8 +110,6 @@ const MyList = () => {
                         getStatusCount={getStatusCount}
                         animeCount={animeCount}
                     />
-
-                    {/* Results info */}
                 </div>
             )}
 

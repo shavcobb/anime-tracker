@@ -82,11 +82,12 @@ const AnimeCard = ({ anime, onAddToList, isAlreadyInList = false }: AnimeCardPro
                         <h3 className="font-semibold text-white text-sm line-clamp-2 leading-tight">
                             {anime.title}
                         </h3>
-                        {anime.englishTitle && anime.englishTitle !== anime.title && (
-                            <p className="text-xs text-gray-400 mt-1 line-clamp-1">
-                                {anime.englishTitle}
-                            </p>
-                        )}
+                        <p className="text-xs text-gray-400 mt-1 line-clamp-1 min-h-[16px]">
+                            {anime.englishTitle && anime.englishTitle !== anime.title
+                                ? anime.englishTitle
+                                : ''
+                            }
+                        </p>
                     </div>
 
                     {/* Info */}
@@ -152,7 +153,7 @@ const AnimeCard = ({ anime, onAddToList, isAlreadyInList = false }: AnimeCardPro
                 onClose={() => setShowModal(false)}
                 title={anime.englishTitle ?? anime.title}
             >
-                <AnimeDetailModal animeId={anime.id} />
+                <AnimeDetailModal animeId={anime.id} onAddToList={onAddToList}/>
             </Modal>
         </>
     );

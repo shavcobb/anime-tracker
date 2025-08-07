@@ -21,7 +21,6 @@ export const StatusFilterDropdown: React.FC<StatusFilterDropdownProps> = ({
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
-    // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             console.log('Click detected!');
@@ -88,8 +87,8 @@ export const StatusFilterDropdown: React.FC<StatusFilterDropdownProps> = ({
                         >
                             <span>All</span>
                             <span className="text-red-400 bg-red-900/30 px-2 py-0.5 rounded-full text-sm">
-                {animeCount}
-              </span>
+                                {animeCount}
+                            </span>
                         </button>
 
                         {/* Individual Status Options */}
@@ -110,8 +109,8 @@ export const StatusFilterDropdown: React.FC<StatusFilterDropdownProps> = ({
                                 >
                                     <span>{option.label}</span>
                                     <span className="text-red-400 bg-red-900/30 px-2 py-0.5 rounded-full text-sm">
-                    {count}
-                  </span>
+                                        {count}
+                                    </span>
                                 </button>
                             );
                         })}

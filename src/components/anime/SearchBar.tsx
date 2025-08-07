@@ -36,7 +36,7 @@ const SearchBar = (props: SearchBarProps) => {
             value={searchQuery}
             onChange={(e) => {
                 setSearchQuery(e.target.value);
-                // Real-time empty detection
+
                 if (e.target.value.trim() === '') {
                     onSearch("", []);
                 }

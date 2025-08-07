@@ -47,7 +47,7 @@ export interface JikanAnime {
     duration?: string;
 }
 
-// Simplified anime data for our app
+// Simplified anime data for app
 export interface Anime {
     id: number;
     title: string;

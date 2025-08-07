@@ -1,4 +1,3 @@
-// pages/Search.tsx
 import { useState, useEffect } from 'react';
 import AnimeCard from '../components/anime/AnimeCard';
 import {type Anime, type UserAnimeEntry, WATCH_STATUS} from '../types/anime';
@@ -13,6 +12,8 @@ const Search = () => {
     const [userAnimeList, setUserAnimeList] = useState<UserAnimeEntry[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isLoadingPopular, setIsLoadingPopular] = useState(false);
+    const [searchError, setSearchError] = useState<string | null>(null);
+    const [popularError, setPopularError] = useState<string | null>(null);
 
     const hasSearched = searchQuery.length > 0;
     const hasResults = searchResults.length > 0;
@@ -30,6 +31,7 @@ const Search = () => {
                 setPopularResults(transformedData);
             } catch (error) {
                 console.error('Error fetching popular results:', error);
+                setPopularError('Unable to load popular anime at this time. Please try again later.');
             } finally {
                 setIsLoadingPopular(false);
             }
@@ -43,16 +45,17 @@ const Search = () => {
         setUserAnimeList(storedAnimeList);
     }, []);
 
-    const handleSearchStateChange = (query: string, results: Anime[]) => {
+    const handleSearchStateChange = (query: string, results: Anime[], error?: string) => {
         setSearchQuery(query);
         setSearchResults(results);
+        setSearchError(error ?? null);
     };
 
     const handleAddToList = (anime: Anime) => {
         addAnimeToList(anime, WATCH_STATUS.PLAN_TO_WATCH);
-        
+
         const updatedList = getUserAnimeList();
-    setUserAnimeList(updatedList);
+        setUserAnimeList(updatedList);
     };
 
     const SkeletonCard = () => (
@@ -111,31 +114,48 @@ const Search = () => {
                                 {hasResults ? 'Search Results' : 'Popular Anime'}
                             </h2>
                             <span className="text-sm text-gray-400">
-                        {
-                            hasResults
-                                ? `${searchResults.length} results for "${searchQuery}"`
-                                : `${popularResults.length} popular anime`
-                        }
-                    </span>
+                                {
+                                    hasResults
+                                        ? `${searchResults.length} results for "${searchQuery}"`
+                                        : `${popularResults.length} popular anime`
+                                }
+                            </span>
                         </div>
                     )
                 }
 
                 {/* Anime Grid */}
-                {showNoResults ? (
+                {(searchError || popularError) ? (
+                    // Error state - highest priority
+                    <div className="text-center py-12 bg-gray-800 rounded-lg">
+                        <div className="text-red-400 text-lg mb-2">⚠️ Something went wrong</div>
+                        <p className="text-gray-400 mb-4">
+                            {searchError || popularError}
+                        </p>
+                        <button
+                            onClick={() => {
+                                setSearchError(null);
+                                setPopularError(null);
+                            }}
+                            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition-colors"
+                        >
+                            Try Again
+                        </button>
+                    </div>
+                ) : showNoResults ? (
+                    // No results state
                     <div className="text-center py-12">
                         <p className="text-gray-400 text-lg">No results found for "{searchQuery}"</p>
                         <p className="text-gray-500 text-sm mt-2">Try searching for something else</p>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                         {(isLoading || (!hasSearched && isLoadingPopular)) ? (
-                            // Show skeleton cards while searching OR while loading popular anime
                             Array.from({ length: 12 }, (_, index) => (
                                 <SkeletonCard key={`skeleton-${index}`} />
                             ))
                         ) : (
-                            // Show actual results
+                            // Actual results
                             currentResultsShown.map((anime) => (
                                 <AnimeCard
                                     key={anime.id}

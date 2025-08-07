@@ -5,7 +5,7 @@ const API_BASE_URL = "https://api.jikan.moe/v4";
 
 export async function getPopularAnime(): Promise<Anime[]> {
     try {
-        const url = `${API_BASE_URL}/top/anime?limit=18&type=tv&filter=bypopularity`;
+        const url = `${API_BASE_URL}/top/anime?limit=16&type=tv&filter=bypopularity`;
         const response = await fetch(url);
 
         if (!response.ok) {
@@ -17,7 +17,7 @@ export async function getPopularAnime(): Promise<Anime[]> {
         return data.data.map((jikanAnime: JikanAnime) => transformJikanToAnime(jikanAnime));
 
     } catch (error) {
-        console.log(`Error searching for popular anime:`, error);
+        console.warn(`Error searching for popular anime:`, error);
         return [];
     }
 }
@@ -36,7 +36,7 @@ export async function searchAnime(query: string): Promise<Anime[]> {
         return data.data.map((jikanAnime: JikanAnime) => transformJikanToAnime(jikanAnime));
 
     } catch (error) {
-        console.log(`Error searching for ${query}:`, error);
+        console.warn(`Error searching for ${query}:`, error);
         return [];
     }
 }
@@ -53,7 +53,7 @@ export async function getAnimeById(id: number): Promise<Anime | null> {
         const data = await response.json();
         return transformJikanToAnime(data.data);
     } catch (error) {
-        console.log(`Error fetching anime with ID ${id}:`, error);
+        console.warn(`Error fetching anime with ID ${id}:`, error);
         return null;
     }
 }

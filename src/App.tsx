@@ -1,8 +1,5 @@
-// App.tsx
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/layout/Layout';
-
-// Page components (we'll create these next)
 import Search from './pages/Search';
 import MyList from './pages/MyList';
 import Stats from './pages/Stats';

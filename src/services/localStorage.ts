@@ -1,17 +1,5 @@
 import {type Anime, type UserAnimeEntry, WATCH_STATUS, type WatchStatus} from "../types/anime";
 
-// Save data (key-value pairs)
-//localStorage.setItem('key', 'value')
-
-// Load data
-//const value = localStorage.getItem('key')
-
-// Remove data
-//localStorage.removeItem('key')
-
-// Clear everything
-//localStorage.clear()
-
 export const getUserAnimeList = (): UserAnimeEntry[] => {
     const data = localStorage.getItem('userAnimeList');
 

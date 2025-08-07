@@ -23,7 +23,6 @@ export const EpisodeCounter: React.FC<EpisodeCounterProps> = ({
     const [inputValue, setInputValue] = useState(currentEpisode.toString());
     const inputRef = useRef<HTMLInputElement>(null);
 
-    // Focus input when editing starts
     useEffect(() => {
         if (isEditing && inputRef.current) {
             inputRef.current.focus();
@@ -31,7 +30,6 @@ export const EpisodeCounter: React.FC<EpisodeCounterProps> = ({
         }
     }, [isEditing]);
 
-    // Reset input value when currentEpisode changes externally
     useEffect(() => {
         setInputValue(currentEpisode.toString());
     }, [currentEpisode]);
@@ -39,15 +37,12 @@ export const EpisodeCounter: React.FC<EpisodeCounterProps> = ({
     const handleSave = () => {
         const newValue = parseInt(inputValue);
 
-        // Validate the input
         if (isNaN(newValue) || newValue < 0 || newValue > totalEpisodes) {
-            // Invalid input, reset to current value
             setInputValue(currentEpisode.toString());
             setIsEditing(false);
             return;
         }
 
-        // Save the new value
         onEpisodeChange(newValue);
         setIsEditing(false);
     };
