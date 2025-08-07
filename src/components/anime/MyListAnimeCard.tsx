@@ -65,7 +65,7 @@ const MyListAnimeCard = ({ anime, userEntry, onStatusChange, showProgressTracker
     return (
         <>
             <div onClick={handleCardClick}
-                 className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 group min-h-[350px] flex flex-col cursor-pointer">
+                 className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 group flex flex-col cursor-pointer">
                 {/* Cover Image */}
                 <div className="relative aspect-[4/5] sm:aspect-[3/4] overflow-hidden">
                     <img
@@ -83,7 +83,7 @@ const MyListAnimeCard = ({ anime, userEntry, onStatusChange, showProgressTracker
                     {/* Status overlay with dropdown */}
                     <div className="absolute top-2 left-2" ref={dropdownRef}>
                         <button
-                            onClick={handleStatusClick} // Updated
+                            onClick={handleStatusClick}
                             className={`${getWatchStatusColor(userEntry.status)} text-white px-2 py-1 rounded text-xs cursor-pointer`}
                         >
                             {formatWatchStatus(userEntry.status)}
@@ -109,10 +109,10 @@ const MyListAnimeCard = ({ anime, userEntry, onStatusChange, showProgressTracker
                 </div>
 
                 {/* Content */}
-                <div className="p-4 space-y-3 flex-1 flex flex-col justify-end">
+                <div className="p-4 space-y-3 flex-1 flex flex-col justify-between">
                     {/* Title */}
-                    <div>
-                        <h3 className="font-semibold text-white text-sm line-clamp-2 leading-tight">
+                    <div className="h-12">
+                        <h3 className="font-semibold text-white text-sm md:text-base line-clamp-3 leading-tight">
                             {anime.englishTitle ?? anime.title}
                         </h3>
                     </div>
