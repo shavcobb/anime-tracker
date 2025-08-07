@@ -50,6 +50,9 @@ const Search = () => {
 
     const handleAddToList = (anime: Anime) => {
         addAnimeToList(anime, WATCH_STATUS.PLAN_TO_WATCH);
+        
+        const updatedList = getUserAnimeList();
+    setUserAnimeList(updatedList);
     };
 
     const SkeletonCard = () => (
