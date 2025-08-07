@@ -97,9 +97,6 @@ const MyList = () => {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <h1 className="text-3xl font-bold text-red-400">My Anime List</h1>
-                <div className="text-sm text-gray-400">
-                    {animeCount} anime tracked
-                </div>
             </div>
 
             {/* Filter Buttons - Only show if list is not empty */}
@@ -115,12 +112,6 @@ const MyList = () => {
                     />
 
                     {/* Results info */}
-                    <div className="text-sm text-gray-400">
-                        {activeFilter === 'all'
-                            ? `Showing all ${animeCount} anime`
-                            : `Showing ${filteredCount} anime with status "${statusOptions.find(opt => opt.value === activeFilter)?.label}"`
-                        }
-                    </div>
                 </div>
             )}
 
