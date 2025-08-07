@@ -50,6 +50,15 @@ const Search = () => {
         setSearchResults(results);
         setSearchError(error ?? null);
     };
+    
+    useEffect(() => {
+    const handleUpdate = () => {
+        const storedAnimeList = getUserAnimeList();
+        setUserAnimeList(storedAnimeList);
+    };
+    window.addEventListener('animeListUpdated', handleUpdate);
+    return () => window.removeEventListener('animeListUpdated', handleUpdate);
+}, []);
 
     const handleAddToList = (anime: Anime) => {
         addAnimeToList(anime, WATCH_STATUS.PLAN_TO_WATCH);

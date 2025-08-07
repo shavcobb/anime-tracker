@@ -108,6 +108,9 @@ export const AnimeDetailModal: React.FC<AnimeDetailModalProps> = ({ animeId, onA
         setUserEntry(null);
         setIsInUserList(false);
         setAnimeData(anime); // Keep the anime data so we can still show details
+        
+        // Notify other components
+    window.dispatchEvent(new CustomEvent('animeListUpdated'));
     };
 
     const AnimeDetailModalSkeleton = () => (
