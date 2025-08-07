@@ -67,7 +67,7 @@ const MyListAnimeCard = ({ anime, userEntry, onStatusChange, showProgressTracker
             <div onClick={handleCardClick}
                  className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 group min-h-[350px] flex flex-col cursor-pointer">
                 {/* Cover Image */}
-                <div className="relative aspect-[3/4] overflow-hidden">
+                <div className="relative aspect-[4/5] sm:aspect-[3/4] overflow-hidden">
                     <img
                         src={anime.coverImage}
                         alt={anime.title}
@@ -81,7 +81,7 @@ const MyListAnimeCard = ({ anime, userEntry, onStatusChange, showProgressTracker
                     />
 
                     {/* Status overlay with dropdown */}
-                    <div className="absolute top-2 left-2">
+                    <div className="absolute top-2 left-2" ref={dropdownRef}>
                         <button
                             onClick={handleStatusClick} // Updated
                             className={`${getWatchStatusColor(userEntry.status)} text-white px-2 py-1 rounded text-xs cursor-pointer`}
@@ -91,7 +91,6 @@ const MyListAnimeCard = ({ anime, userEntry, onStatusChange, showProgressTracker
 
                         {isDropdownOpen && (
                             <div
-                                ref={dropdownRef}
                                 className="absolute top-full left-0 right-0 mt-1 bg-gray-700 border border-gray-600 rounded text-xs z-10 min-w-32">
                                 {statusOptions
                                     .filter((option) => option.value !== userEntry.status)

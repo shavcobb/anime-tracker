@@ -49,7 +49,7 @@ const AnimeCard = ({ anime, onAddToList, isAlreadyInList = false }: AnimeCardPro
             <div onClick={handleCardClick}
                  className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 group cursor-pointer">
                 {/* Cover Image */}
-                <div className="relative aspect-[3/4] overflow-hidden">
+                <div className="relative aspect-[4/5] sm:aspect-[3/4] overflow-hidden">
                     <img
                         src={anime.coverImage}
                         alt={anime.title}
@@ -79,7 +79,7 @@ const AnimeCard = ({ anime, onAddToList, isAlreadyInList = false }: AnimeCardPro
                 <div className="p-4 space-y-3">
                     {/* Title */}
                     <div>
-                        <h3 className="font-semibold text-white text-sm line-clamp-2 leading-tight">
+                        <h3 className="font-semibold text-white text-sm md:text-base line-clamp-1 leading-tight">
                             {anime.title}
                         </h3>
                         <p className="text-xs text-gray-400 mt-1 line-clamp-1 min-h-[16px]">
@@ -110,35 +110,16 @@ const AnimeCard = ({ anime, onAddToList, isAlreadyInList = false }: AnimeCardPro
                         )}
                     </div>
 
-                    {/* Genres */}
-                    {anime.genres && anime.genres.length > 0 && (
-                        <div className="flex flex-wrap gap-1">
-                            {anime.genres.slice(0, 3).map((genre, index) => (
-                                <span
-                                    key={index}
-                                    className="bg-gray-700 text-gray-300 px-2 py-1 rounded text-xs"
-                                >
-                                        {genre}
-                                    </span>
-                            ))}
-                            {anime.genres.length > 3 && (
-                                <span className="text-gray-400 text-xs py-1">
-                                        +{anime.genres.length - 3} more
-                                    </span>
-                            )}
-                        </div>
-                    )}
-
                     {/* Add to List Button */}
                     {isAlreadyInList ? (
-                        <div className="w-full bg-gray-600 text-gray-300 py-2 px-4 rounded font-medium text-sm flex items-center justify-center space-x-2 cursor-not-allowed">
+                        <div className="w-full bg-gray-600 text-gray-300 py-2 px-4 rounded font-medium text-xs md:text-base flex items-center justify-center space-x-2 cursor-not-allowed">
                             <span>✓</span>
                             <span>Already Added</span>
                         </div>
                     ) : (
                         <button
                             onClick={handleAddClick}
-                            className="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded font-medium text-sm transition-colors duration-200 flex items-center justify-center space-x-2"
+                            className="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded font-medium text-xs md:text-base transition-colors duration-200 flex items-center justify-center space-x-2"
                         >
                             <span>➕</span>
                             <span>Add to List</span>
